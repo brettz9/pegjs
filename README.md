@@ -60,16 +60,16 @@ To generate a parser from your grammar, use the `pegjs` command:
     $ pegjs arithmetics.pegjs
 
 This writes parser source code into a file with the same name as the grammar
-file but with “.js” extension. You can also specify the output file explicitly:
+file but with a “.js” extension. You can also specify the output file explicitly:
 
     $ pegjs arithmetics.pegjs arithmetics-parser.js
 
-If you omit both input and ouptut file, standard input and output are used.
+If you omit both input and output files, standard input and output will be used.
 
 By default, the parser object is assigned to `module.exports`, which makes the
 output a Node.js module. You can assign it to another variable by passing a
 variable name using the `-e`/`--export-var` option. This may be helpful if you
-want to use the parser in browser environment.
+want to use the parser in a browser environment.
 
 You can tweak the generated parser with several options:
 
@@ -90,7 +90,7 @@ In Node.js, require the PEG.js parser generator module:
 
     var PEG = require("pegjs");
 
-In browser, include the PEG.js library in your web page or application using the
+In the browser, include the PEG.js library in your web page or application using the
 `<script>` tag. The API will be available in the `PEG` global object.
 
 To generate a parser, call the `PEG.buildParser` method and pass your grammar as
@@ -98,9 +98,9 @@ a parameter:
 
     var parser = PEG.buildParser("start = ('a' / 'b')+");
 
-The method will return generated parser object or its source code as a string
+The method will return a generated parser object or its source code as a string
 (depending on the value of the `output` option — see below). It will throw an
-exception if the grammar is invalid. The exception will contain `message`
+exception if the grammar is invalid. The exception will contain a `message`
 property with more details about the error.
 
 You can tweak the generated parser by passing a second parameter with an options
@@ -210,11 +210,11 @@ match result when parsing is successful.
 One special case of parser expression is a *parser action* — a piece of
 JavaScript code inside curly braces (“{” and “}”) that takes match results of
 some of the the preceding expressions and returns a JavaScript value. This value
-is considered match result of the preceding expression (in other words, the
+will be treated as the match result of the preceding expression (in other words, the
 parser action is a match result transformer).
 
 In our arithmetics example, there are many parser actions. Consider the action
-in expression `digits:[0-9]+ { return parseInt(digits.join(""), 10); }`. It
+in the expression `digits:[0-9]+ { return parseInt(digits.join(""), 10); }`. It
 takes the match result of the expression [0-9]+, which is an array of strings
 containing digits, as its parameter. It joins the digits together to form a
 number and converts it to a JavaScript `number` object.
@@ -348,7 +348,7 @@ consider the match failed.
 The action is a piece of JavaScript code that is executed as if it was inside a
 function. It gets the match results of labeled expressions in preceding
 expression as its arguments. The action should return some JavaScript value
-using the `return` statement. This value is considered match result of the
+using the `return` statement. This value will be treated as the match result of the
 preceding expression. The action can return `null` to indicate a match failure.
 
 The code inside the action can access all variables and functions defined in the
