@@ -23,5 +23,8 @@
     "bin": "bin/peg.js",
     "engines": {
         "node": ">= 8"
+    },
+    "dependencies": {
+        "source-map": "^0.7.3"
     }
 }

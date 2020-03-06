@@ -2,11 +2,47 @@
 
 "use strict";
 
+// Also has `SourceMapConsumer`, `SourceMapGenerator`
+const { SourceNode } = require( "source-map" );
+
+class PartHolder {
+
+    constructor( source ) {
+
+        this.source = source || null;
+        this.children = [];
+
+    }
+
+    push( ...args ) {
+
+        this.children.push(
+
+            ...args.map(
+
+                ( arg, i ) => new SourceNode( this.children.length + 1 + i, 0, this.source, arg + "\n" ),
+
+            ),
+
+        );
+
+    }
+
+}
+
+const node = new SourceNode( 1, 2, "a.cpp", [
+    new SourceNode( 3, 4, "b.cpp", "extern int status;\n" ),
+    new SourceNode( 5, 6, "c.cpp", "std::string* make_string(size_t n);\n" ),
+    new SourceNode( 7, 8, "d.cpp", "int main(int argc, char** argv) {}\n" ),
+] );
+
 const util = require( "../../util" );
 const VERSION = require( "../../../package.json" ).version;
 
 // Generates parser JavaScript code.
 function generateJS( ast, session, options ) {
+    // console.log('ast', ast.rules.map(({name}) => name));
+    console.log('ast', ast.rules.map(({location: l}) => l)); // start, end, filename
 
     const op = session.opcodes;
 
